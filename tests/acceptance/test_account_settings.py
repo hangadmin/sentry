@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-import pytest
-
 from sentry.testutils import AcceptanceTestCase
 
 
@@ -38,12 +36,9 @@ class AccountSettingsTest(AcceptanceTestCase):
         )
         self.login_as(self.user)
 
-    # TODO(billy): Enable this and remove the slower tests below
-    @pytest.mark.skip(
-        reason="This will be faster but does not check if old django routes are redirecting")
     def test_account_settings(self):
         with self.feature('organizations:onboarding'):
-            path = '/account/settings/'
+            path = '/settings/account/'
             self.browser.get(path)
             self.browser.wait_until_not('.loading-indicator')
             self.browser.snapshot('account settings')
@@ -77,13 +72,13 @@ class AccountSettingsTest(AcceptanceTestCase):
             self.browser.snapshot('account identities settings')
 
             self.browser.click('[href="/settings/account/close-account/"]')
-            self.browser.wait_until_not('.loading-indicator')
+            self.browser.wait_until_not('.loading')
             self.browser.snapshot('account settings - close account')
 
     def test_account_appearance_settings(self):
         with self.feature('organizations:onboarding'):
             self.browser.get('/account/settings/appearance/')
-            self.browser.wait_until_not('.loading-indicator')
+            self.browser.wait_until_not('.loading')
             self.browser.snapshot('account appearance settings')
 
     def test_account_security_settings(self):
